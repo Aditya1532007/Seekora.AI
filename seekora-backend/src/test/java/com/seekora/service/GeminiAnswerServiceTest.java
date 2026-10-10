@@ -20,11 +20,10 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertThrows;
 
 public class GeminiAnswerServiceTest {
-    private static final String GROUNDED_RESPONSE = "{\"status\":\"completed\",\"steps\":["
-            + "{\"type\":\"google_search_call\",\"arguments\":{\"queries\":[\"sample query\"]}},"
-            + "{\"type\":\"model_output\",\"content\":[{\"type\":\"text\","
-            + "\"text\":\"Grounded answer.\",\"annotations\":[{\"type\":\"url_citation\","
-            + "\"url\":\"https://example.org/source\",\"title\":\"Example source\"}]}]}]}";
+    private static final String GROUNDED_RESPONSE = "{\"candidates\":[{\"content\":{\"parts\":["
+            + "{\"text\":\"Grounded answer.\"}]},\"groundingMetadata\":{\"groundingChunks\":["
+            + "{\"web\":{\"uri\":\"https://example.org/source\","
+            + "\"title\":\"Example source\"}}]}}]}";
 
     @Test
     public void sendsQuestionToGeminiAndReturnsOnlyGroundedCitations() {
@@ -43,17 +42,19 @@ public class GeminiAnswerServiceTest {
         assertEquals("Example source", sources.get(0).getTitle());
 
         HttpRequest request = captured.get();
-        assertEquals("https://generativelanguage.googleapis.com/v1beta/interactions",
+        assertEquals("https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent",
                 request.uri().toString());
         assertEquals("test-key", request.headers().firstValue("x-goog-api-key").orElse(null));
         assertFalse(request.uri().toString().contains("test-key"));
         JsonObject payload = JsonParser.parseString(body(request)).getAsJsonObject();
-        assertEquals("gemini-3.8-flash", payload.get("model").getAsString());
-        assertFalse(payload.get("store").getAsBoolean());
-        assertTrue(payload.get("input").getAsString().contains("What is the answer?"));
-        assertTrue(payload.get("input").getAsString().contains("Saved topic context"));
-        assertEquals("google_search",
-                payload.getAsJsonArray("tools").get(0).getAsJsonObject().get("type").getAsString());
+        assertTrue(payload.getAsJsonArray("contents").get(0).getAsJsonObject()
+                .getAsJsonArray("parts").get(0).getAsJsonObject().get("text").getAsString()
+                .contains("What is the answer?"));
+        assertTrue(payload.getAsJsonArray("contents").get(0).getAsJsonObject()
+                .getAsJsonArray("parts").get(0).getAsJsonObject().get("text").getAsString()
+                .contains("Saved topic context"));
+        assertTrue(payload.has("systemInstruction"));
+        assertTrue(payload.getAsJsonArray("tools").get(0).getAsJsonObject().has("google_search"));
     }
 
     @Test
@@ -173,10 +174,27 @@ public class GeminiAnswerServiceTest {
 
         JsonObject payload = JsonParser.parseString(body(captured.get())).getAsJsonObject();
         assertFalse(payload.has("tools"));
-        assertTrue(payload.getAsJsonArray("input").get(1).getAsJsonObject()
-                .get("data").getAsString().equals("AQI="));
-        assertEquals("image/png", payload.getAsJsonArray("input").get(1)
-                .getAsJsonObject().get("mime_type").getAsString());
+        JsonObject imagePart = payload.getAsJsonArray("contents").get(0).getAsJsonObject()
+                .getAsJsonArray("parts").get(1).getAsJsonObject();
+        assertEquals("AQI=", imagePart.getAsJsonObject("inlineData").get("data").getAsString());
+        assertEquals("image/png", imagePart.getAsJsonObject("inlineData").get("mimeType").getAsString());
+    }
+
+
+    @Test
+    public void reportsBlockedAndEmptyCandidateResponsesSafely() {
+        GeminiAnswerService blocked = service("test-key", request ->
+                new GeminiAnswerService.HttpResponseData(200,
+                        "{\"promptFeedback\":{\"blockReason\":\"SAFETY\"}}"));
+        ServiceException blockedError = assertThrows(ServiceException.class, () -> blocked.answer("A question"));
+        assertEquals(422, blockedError.getStatusCode());
+        assertTrue(blockedError.getMessage().contains("SAFETY"));
+
+        GeminiAnswerService empty = service("test-key", request ->
+                new GeminiAnswerService.HttpResponseData(200, "{\"candidates\":[{}]}"));
+        ServiceException emptyError = assertThrows(ServiceException.class, () -> empty.answer("A question"));
+        assertEquals(502, emptyError.getStatusCode());
+        assertTrue(emptyError.getMessage().contains("empty answer"));
     }
 
     private GeminiAnswerService service(String apiKey, GeminiAnswerService.Transport transport) {

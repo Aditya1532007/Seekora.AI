@@ -24,15 +24,17 @@ import java.util.Map;
 
 /** Calls Gemini from Tomcat and returns only citations present in its response. */
 public final class GeminiAnswerService {
-    private static final URI INTERACTIONS_URI = URI.create(
-            "https://generativelanguage.googleapis.com/v1beta/interactions");
+    private static final String GENERATE_CONTENT_URL =
+            "https://generativelanguage.googleapis.com/v1beta/models/";
     private static final String DEFAULT_MODEL = "gemini-3.8-flash";
     private static final String INSTRUCTIONS = "You are Seekora, a helpful general-purpose answer engine. "
-            + "Answer the user's actual question clearly and directly. Use Google Search grounding for "
-            + "current or external factual questions, compare the retrieved information, and cite only "
-            + "URLs returned in your grounding annotations. Never invent sources or claim that you searched "
-            + "when no search was performed. Be honest about uncertainty. For medical, legal, financial, or "
-            + "safety-sensitive questions, provide general information and encourage appropriate professional help.";
+            + "Answer the user's actual question clearly and directly. For factual questions, use Google Search "
+            + "grounding to gather evidence from multiple independent websites when available. Compare the "
+            + "sources, synthesize their relevant findings into one clear answer, and mention meaningful "
+            + "disagreements or uncertainty. Cite only URLs returned in your grounding metadata; never invent "
+            + "sources, claim to have searched when no search was performed, or imply multiple sources were "
+            + "checked when only one was available. Be honest about uncertainty. For medical, legal, financial, "
+            + "or safety-sensitive questions, provide general information and encourage appropriate professional help.";
     private static final HttpClient CLIENT = HttpClient.newBuilder()
             .connectTimeout(Duration.ofSeconds(10)).build();
 
@@ -99,13 +101,13 @@ public final class GeminiAnswerService {
                         + "User request: " + prompt.trim();
         JsonArray input = new JsonArray();
         JsonObject textPart = new JsonObject();
-        textPart.addProperty("type", "text");
         textPart.addProperty("text", instruction);
         input.add(textPart);
         JsonObject imagePart = new JsonObject();
-        imagePart.addProperty("type", "image");
-        imagePart.addProperty("data", Base64.getEncoder().encodeToString(image));
-        imagePart.addProperty("mime_type", mimeType);
+        JsonObject inlineData = new JsonObject();
+        inlineData.addProperty("mimeType", mimeType);
+        inlineData.addProperty("data", Base64.getEncoder().encodeToString(image));
+        imagePart.add("inlineData", inlineData);
         input.add(imagePart);
         return send(input, false);
     }
@@ -130,19 +132,37 @@ public final class GeminiAnswerService {
         }
 
         JsonObject payload = new JsonObject();
-        payload.addProperty("model", model);
-        payload.addProperty("system_instruction", INSTRUCTIONS);
-        payload.addProperty("store", false);
-        payload.add("input", input);
+        JsonArray contents = new JsonArray();
+        JsonObject userContent = new JsonObject();
+        userContent.addProperty("role", "user");
+        JsonArray userParts = input.isJsonArray() ? input.getAsJsonArray() : new JsonArray();
+        if (!input.isJsonArray()) {
+            JsonObject textPart = new JsonObject();
+            textPart.addProperty("text", input.getAsString());
+            userParts.add(textPart);
+        }
+        userContent.add("parts", userParts);
+        contents.add(userContent);
+        payload.add("contents", contents);
+
+        JsonObject systemInstruction = new JsonObject();
+        JsonArray systemParts = new JsonArray();
+        JsonObject systemPart = new JsonObject();
+        systemPart.addProperty("text", INSTRUCTIONS);
+        systemParts.add(systemPart);
+        systemInstruction.add("parts", systemParts);
+        payload.add("systemInstruction", systemInstruction);
+
         if (useGoogleSearch) {
             JsonArray tools = new JsonArray();
             JsonObject googleSearch = new JsonObject();
-            googleSearch.addProperty("type", "google_search");
+            googleSearch.add("google_search", new JsonObject());
             tools.add(googleSearch);
             payload.add("tools", tools);
         }
 
-        HttpRequest request = HttpRequest.newBuilder(INTERACTIONS_URI)
+        URI endpoint = URI.create(GENERATE_CONTENT_URL + model + ":generateContent");
+        HttpRequest request = HttpRequest.newBuilder(endpoint)
                 .timeout(Duration.ofSeconds(45))
                 .header("x-goog-api-key", apiKey)
                 .header("Content-Type", "application/json")
@@ -296,49 +316,72 @@ public final class GeminiAnswerService {
 
     Answer parseResponse(String json) {
         JsonObject response = JsonParser.parseString(json).getAsJsonObject();
-        String status = string(response, "status");
-        if ("failed".equalsIgnoreCase(status)) {
-            throw new ServiceException("Gemini could not complete this request. Please try again.", 502);
+        JsonArray candidates = response.has("candidates") && response.get("candidates").isJsonArray()
+                ? response.getAsJsonArray("candidates") : new JsonArray();
+        if (candidates.size() == 0) {
+            JsonObject feedback = response.has("promptFeedback") && response.get("promptFeedback").isJsonObject()
+                    ? response.getAsJsonObject("promptFeedback") : new JsonObject();
+            String reason = string(feedback, "blockReason");
+            if (reason != null) {
+                throw new ServiceException("Gemini blocked this request (" + reason
+                        + "). Please rephrase it and try again.", 422);
+            }
+            throw new ServiceException("Gemini returned no answer candidates. Please try again.", 502);
+        }
+
+        JsonObject candidate = null;
+        for (JsonElement element : candidates) {
+            if (element.isJsonObject()) {
+                candidate = element.getAsJsonObject();
+                break;
+            }
+        }
+        if (candidate == null) {
+            throw new ServiceException("Gemini returned no answer candidates. Please try again.", 502);
+        }
+        String finishReason = string(candidate, "finishReason");
+        if (finishReason != null && ("SAFETY".equalsIgnoreCase(finishReason)
+                || "BLOCKLIST".equalsIgnoreCase(finishReason)
+                || "PROHIBITED_CONTENT".equalsIgnoreCase(finishReason)
+                || "SPII".equalsIgnoreCase(finishReason))) {
+            throw new ServiceException("Gemini blocked this request. Please rephrase it and try again.", 422);
         }
 
         StringBuilder text = new StringBuilder();
         Map<String, Source> sources = new LinkedHashMap<>();
-        JsonArray steps = response.has("steps") && response.get("steps").isJsonArray()
-                ? response.getAsJsonArray("steps") : new JsonArray();
-        for (JsonElement stepElement : steps) {
-            if (!stepElement.isJsonObject()) continue;
-            JsonObject step = stepElement.getAsJsonObject();
-            if (!"model_output".equals(string(step, "type"))
-                    || !step.has("content") || !step.get("content").isJsonArray()) continue;
-            for (JsonElement contentElement : step.getAsJsonArray("content")) {
-                if (!contentElement.isJsonObject()) continue;
-                JsonObject content = contentElement.getAsJsonObject();
-                if (!"text".equals(string(content, "type"))) continue;
-                String partText = string(content, "text");
-                if (partText != null && !partText.trim().isEmpty()) {
-                    if (text.length() > 0) text.append('\n');
-                    text.append(partText);
-                }
-                collectCitations(content, sources);
+        JsonObject content = candidate.has("content") && candidate.get("content").isJsonObject()
+                ? candidate.getAsJsonObject("content") : new JsonObject();
+        JsonArray parts = content.has("parts") && content.get("parts").isJsonArray()
+                ? content.getAsJsonArray("parts") : new JsonArray();
+        for (JsonElement partElement : parts) {
+            if (!partElement.isJsonObject()) continue;
+            JsonObject part = partElement.getAsJsonObject();
+            String partText = string(part, "text");
+            if (partText != null && !partText.trim().isEmpty()) {
+                if (text.length() > 0) text.append('\n');
+                text.append(partText);
             }
         }
+        collectGroundingSources(candidate, sources);
         String answerText = text.toString().trim();
         if (answerText.isEmpty()) {
-            throw new ServiceException(
-                    "Gemini returned an empty answer. Please try rephrasing your question.", 502);
+            throw new ServiceException("Gemini returned an empty answer. Please rephrase your question.", 502);
         }
         return new Answer(answerText, new ArrayList<>(sources.values()));
     }
 
-    private void collectCitations(JsonObject content, Map<String, Source> sources) {
-        if (!content.has("annotations") || !content.get("annotations").isJsonArray()) return;
-        for (JsonElement element : content.getAsJsonArray("annotations")) {
+    private void collectGroundingSources(JsonObject candidate, Map<String, Source> sources) {
+        if (!candidate.has("groundingMetadata") || !candidate.get("groundingMetadata").isJsonObject()) return;
+        JsonObject metadata = candidate.getAsJsonObject("groundingMetadata");
+        if (!metadata.has("groundingChunks") || !metadata.get("groundingChunks").isJsonArray()) return;
+        for (JsonElement element : metadata.getAsJsonArray("groundingChunks")) {
             if (!element.isJsonObject()) continue;
-            JsonObject annotation = element.getAsJsonObject();
-            if (!"url_citation".equals(string(annotation, "type"))) continue;
-            String url = string(annotation, "url");
+            JsonObject chunk = element.getAsJsonObject();
+            if (!chunk.has("web") || !chunk.get("web").isJsonObject()) continue;
+            JsonObject web = chunk.getAsJsonObject("web");
+            String url = string(web, "uri");
             if (!isHttpUrl(url)) continue;
-            String title = string(annotation, "title");
+            String title = string(web, "title");
             sources.putIfAbsent(url, new Source(0,
                     title == null || title.trim().isEmpty() ? url : title.trim(), url, "WEB"));
         }

@@ -13,6 +13,6 @@ services:
       - key: SEEKORA_DB_PASSWORD
         sync: false
       - key: SEEKORA_ALLOWED_ORIGINS
-        sync: false
+        value: https://seekora-frontend.onrender.com
       - key: GEMINI_API_KEY
         sync: false

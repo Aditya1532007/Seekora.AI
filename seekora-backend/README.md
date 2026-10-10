@@ -76,12 +76,13 @@ credential defaults in the repository.
 
 Create a Gemini API key in [Google AI Studio](https://aistudio.google.com/apikey). The key stays
 on the Tomcat server, is sent to Google only in the `x-goog-api-key` request header, and is never
-sent to the browser. Seekora calls the Gemini Interactions API with Google Search grounding for
-general questions, chat, and research. It returns clickable citations only for URLs supplied in
-Gemini's grounding annotations; it does not invent source links. The optional model setting defaults
-to `gemini-3.8-flash`. Requests use `store:false` so the Interactions API does not retain interaction
-state for follow-up requests; Seekora's existing MySQL search history and saved conversations remain
-unchanged. Google Search grounding may incur Gemini API charges.
+sent to the browser. Seekora calls Gemini's `generateContent` API with Google Search grounding for
+general questions, chat, and research. Gemini is instructed to compare multiple independent websites
+when available and synthesize their findings. The backend extracts answer text from candidate content
+parts and citations from grounding chunks, returning only URLs Gemini supplies. The optional model setting
+defaults to `gemini-3.8-flash`. The backend reads the key from `GEMINI_API_KEY`; Seekora's existing
+MySQL search history and saved conversations remain unchanged. Google Search grounding may incur
+Gemini API charges.
 
 Chat answers open-ended questions too, with a limit of 20 assistant replies per browser session per
 day. Search requests continue to follow account or guest daily search limits.
