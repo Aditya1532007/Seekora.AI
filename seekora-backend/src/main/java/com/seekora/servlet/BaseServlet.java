@@ -24,6 +24,9 @@ public abstract class BaseServlet extends HttpServlet {
         try {
             action.run();
         } catch (ServiceException e) {
+            if (e.getDiagnosticMessage() != null) {
+                log("Service error on " + request.getRequestURI() + ": " + e.getDiagnosticMessage());
+            }
             ServletUtils.error(response, e.getStatusCode(), e.getMessage());
         } catch (DaoException e) {
             log("Database error on " + request.getRequestURI(), e);

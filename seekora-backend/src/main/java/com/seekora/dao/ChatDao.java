@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Collections;
 
 public class ChatDao {
 
@@ -68,6 +69,20 @@ public class ChatDao {
         }
     }
 
+    public int countBotRepliesToday(long chatSessionId) {
+        String sql = "SELECT COUNT(*) FROM chat_messages WHERE chat_session_id = ? "
+                + "AND sender = 'BOT' AND DATE(created_at) = CURDATE()";
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, chatSessionId);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() ? rs.getInt(1) : 0;
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Unable to count today's chat replies", e);
+        }
+    }
+
     public List<ChatMessage> findMessages(long chatSessionId, int limit) {
         String sql = "SELECT id, chat_session_id, sender, message, created_at FROM chat_messages " +
                 "WHERE chat_session_id = ? ORDER BY created_at ASC, id ASC LIMIT ?";
@@ -93,6 +108,33 @@ public class ChatDao {
         } catch (SQLException e) {
             throw new DaoException("Unable to load chat messages", e);
         }
+        return messages;
+    }
+
+    /** Loads the newest messages in chronological order for AI follow-up context. */
+    public List<ChatMessage> findRecentMessages(long chatSessionId, int limit) {
+        String sql = "SELECT id, chat_session_id, sender, message, created_at FROM chat_messages "
+                + "WHERE chat_session_id = ? ORDER BY created_at DESC, id DESC LIMIT ?";
+        List<ChatMessage> messages = new ArrayList<>();
+        try (Connection conn = DatabaseConfig.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, chatSessionId);
+            ps.setInt(2, limit);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    ChatMessage m = new ChatMessage();
+                    m.setId(rs.getLong("id"));
+                    m.setChatSessionId(rs.getLong("chat_session_id"));
+                    m.setSender(rs.getString("sender"));
+                    m.setMessage(rs.getString("message"));
+                    Timestamp created = rs.getTimestamp("created_at");
+                    if (created != null) m.setCreatedAt(created.toLocalDateTime());
+                    messages.add(m);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Unable to load recent chat messages", e);
+        }
+        Collections.reverse(messages);
         return messages;
     }
 

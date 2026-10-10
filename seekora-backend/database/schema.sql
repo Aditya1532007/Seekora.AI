@@ -1,11 +1,10 @@
 -- =====================================================================
---  Seekora - AI Information Platform
+--  Seekora - Knowledge Search Demo
 --  MySQL schema (MySQL 5.7+ / 8.x)
 --  Run:  mysql -u root -p < database/schema.sql
 -- =====================================================================
 
-DROP DATABASE IF EXISTS seekora_db;
-CREATE DATABASE seekora_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE IF NOT EXISTS seekora_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE seekora_db;
 
 -- ---------------------------------------------------------------------
@@ -133,6 +132,33 @@ CREATE TABLE chat_messages (
     CONSTRAINT fk_cm_session FOREIGN KEY (chat_session_id)
         REFERENCES chat_sessions(id) ON DELETE CASCADE,
     INDEX idx_cm_session (chat_session_id, created_at)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- React application conversations and AI answers
+-- ---------------------------------------------------------------------
+CREATE TABLE conversations (
+    id         BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id    BIGINT       NOT NULL,
+    title      VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_conversations_user FOREIGN KEY (user_id)
+        REFERENCES users(id) ON DELETE CASCADE,
+    INDEX idx_conversations_user_updated (user_id, updated_at)
+) ENGINE=InnoDB;
+
+CREATE TABLE messages (
+    id              BIGINT AUTO_INCREMENT PRIMARY KEY,
+    conversation_id BIGINT       NOT NULL,
+    role            ENUM('USER','ASSISTANT') NOT NULL,
+    content         MEDIUMTEXT   NOT NULL,
+    sources         JSON         NOT NULL,
+    mode            VARCHAR(30)  NOT NULL DEFAULT 'ask',
+    created_at      TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_messages_conversation FOREIGN KEY (conversation_id)
+        REFERENCES conversations(id) ON DELETE CASCADE,
+    INDEX idx_messages_conversation_created (conversation_id, created_at, id)
 ) ENGINE=InnoDB;
 
 -- chat_intents : keyword driven answers for the assistant

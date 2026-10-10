@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: seekora-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/health
+    envVars:
+      - key: SEEKORA_DB_URL
+        sync: false
+      - key: SEEKORA_DB_USER
+        sync: false
+      - key: SEEKORA_DB_PASSWORD
+        sync: false
+      - key: SEEKORA_ALLOWED_ORIGINS
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false

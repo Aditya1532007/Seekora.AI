@@ -1,0 +1,4 @@
+/target/
+/build-output*/
+/.maven-repository/
+/src/main/webapp/app/

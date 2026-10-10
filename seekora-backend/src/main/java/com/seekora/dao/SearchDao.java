@@ -61,6 +61,20 @@ public class SearchDao {
         }
     }
 
+    public int countTodayForSession(String sessionKey) {
+        String sql = "SELECT COUNT(*) FROM search_queries WHERE user_id IS NULL " +
+                "AND session_key = ? AND DATE(created_at) = CURDATE()";
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, sessionKey);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() ? rs.getInt(1) : 0;
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Unable to count today's guest searches", e);
+        }
+    }
+
     public List<SearchQuery> findHistory(long userId, int limit, int offset) {
         String sql = "SELECT id, user_id, session_key, query_text, answer_text, knowledge_id, accuracy, " +
                 "response_time_ms, source_count, created_at FROM search_queries " +

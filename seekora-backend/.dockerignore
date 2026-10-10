@@ -1,0 +1,5 @@
+.git
+.maven-repository
+build-output*
+target
+src/main/webapp/WEB-INF/Screenshot*.png

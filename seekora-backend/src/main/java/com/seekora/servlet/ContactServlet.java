@@ -24,7 +24,7 @@ public class ContactServlet extends BaseServlet {
                     JsonUtil.string(body, "email"),
                     JsonUtil.string(body, "subject"),
                     JsonUtil.string(body, "message"));
-            ServletUtils.ok(response, "Thanks! We will reply within 24 hours.", id);
+            ServletUtils.ok(response, "Your message was saved successfully.", id);
         });
     }
 }

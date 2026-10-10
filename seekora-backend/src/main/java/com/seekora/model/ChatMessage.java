@@ -1,6 +1,8 @@
 package com.seekora.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChatMessage {
     private long id;
@@ -8,6 +10,7 @@ public class ChatMessage {
     private String sender;
     private String message;
     private LocalDateTime createdAt;
+    private List<Source> sources = new ArrayList<>();
 
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }
@@ -23,4 +26,6 @@ public class ChatMessage {
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public List<Source> getSources() { return sources; }
+    public void setSources(List<Source> sources) { this.sources = sources; }
 }

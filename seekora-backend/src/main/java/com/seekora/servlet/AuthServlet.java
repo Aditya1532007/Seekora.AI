@@ -71,6 +71,7 @@ public class AuthServlet extends BaseServlet {
 
     private void startSession(HttpServletRequest request, User user) {
         HttpSession session = request.getSession(true);
+        request.changeSessionId();
         session.setAttribute(ServletUtils.SESSION_USER_ID, user.getId());
         session.setAttribute(ServletUtils.SESSION_USER_ROLE, user.getRole());
         session.setMaxInactiveInterval(60 * 60 * 8);

@@ -33,6 +33,12 @@ public final class DatabaseConfig {
         String user = env("SEEKORA_DB_USER", props.getProperty("db.username"));
         String password = env("SEEKORA_DB_PASSWORD", props.getProperty("db.password"));
 
+        if (url == null || url.trim().isEmpty() || user == null || user.trim().isEmpty()
+                || password == null || password.isEmpty()) {
+            throw new IllegalStateException("Database settings are incomplete. Set SEEKORA_DB_URL, " +
+                    "SEEKORA_DB_USER, and SEEKORA_DB_PASSWORD before starting Seekora.");
+        }
+
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl(url);
         config.setUsername(user);

@@ -10,25 +10,17 @@ INSERT INTO plans (code, name, price_monthly, price_yearly, daily_search_limit, 
  ('PREMIUM',  'Premium',  9.00, 86.40,  -1, 1, 2);
 
 INSERT INTO plan_features (plan_id, feature, sort_order) VALUES
- (1, 'AI-powered search (basic)', 1),
- (1, 'Daily summary limits', 2),
+ (1, 'Knowledge base search', 1),
+ (1, '10 searches per day', 2),
  (1, 'Source links included', 3),
  (1, 'Web application access', 4),
- (2, 'Unlimited AI searches', 1),
- (2, 'Advanced summaries & analysis', 2),
- (2, 'PDF upload & analysis', 3),
- (2, 'Search history & personalization', 4),
- (2, 'Priority customer support', 5),
- (2, 'API access for developers', 6);
-
--- ------------------------------ users --------------------------------
--- password for both demo accounts: Passw0rd!
-INSERT INTO users (full_name, email, password_hash, role, plan_id) VALUES
- ('Platform Admin', 'admin@seekora.com', '$2a$10$ESURwsS9eKPq3rYX2MGZqeB65IUdUisedo4ndf6nNpkw4qKWlXz1O', 'ADMIN', 2),
- ('Demo Student',   'demo@seekora.com',  '$2a$10$ESURwsS9eKPq3rYX2MGZqeB65IUdUisedo4ndf6nNpkw4qKWlXz1O', 'USER',  1);
-
-INSERT INTO subscriptions (user_id, plan_id, billing_cycle, amount, status, expires_at) VALUES
- (1, 2, 'YEARLY', 86.40, 'ACTIVE', DATE_ADD(NOW(), INTERVAL 1 YEAR));
+ (2, 'Unlimited knowledge base searches', 1),
+ (2, 'Stored topic summaries', 2),
+ (2, 'Saved search history', 3),
+ (2, 'Profile management', 4),
+ (2, 'Browser voice input', 5),
+ (2, 'JSON API endpoints', 6);
+-- New users create accounts through the signup endpoint.
 
 -- -------------------------- knowledge base ---------------------------
 INSERT INTO knowledge_base (topic, keywords, summary, accuracy) VALUES
@@ -57,40 +49,34 @@ INSERT INTO knowledge_sources (knowledge_id, title, url, source_type) VALUES
 -- ----------------------------- chat bot ------------------------------
 INSERT INTO chat_intents (intent, keywords, reply, sort_order) VALUES
  ('PRICING', 'price,pricing,cost,plan,premium,free',
-  'We have two plans: Freemium ($0/month, 10 searches a day) and Premium ($9/month or $86.40/year) with unlimited searches, PDF analysis and API access.', 1),
+  'This demo includes Freemium and Premium plan records. Premium plan selection is a demonstration only; no payment is processed.', 1),
  ('FEATURES', 'feature,what can you do,summary,source,image',
-  'Seekora gives you AI summaries in simple words, verified source links, related images, search history and a developer API.', 2),
+  'Seekora searches a local knowledge base, displays saved topic summaries and source links, and supports accounts, search history and voice input.', 2),
  ('API', 'api,developer,integrate,rest',
-  'Premium users get REST API access - every endpoint returns JSON so you can embed AI search into your own app.', 3),
+  'Seekora exposes JSON API endpoints for its current features. There is no external AI provider integration configured.', 3),
  ('ACCOUNT', 'account,sign up,signup,login,register,password',
-  'Click "Get Started" to create a free account. You can log in any time to see your search history.', 4),
+  'Click Get Started to create a free account. You can log in any time to see your search history.', 4),
  ('CONTACT', 'contact,support,help,email',
-  'Send us a message through the contact form and our team will reply within 24 hours.', 5),
+  'Use the contact form to save a message for the site administrator.', 5),
  ('GREETING', 'hi,hello,hey,namaste',
-  'Hi! I am the Seekora assistant. Ask me about features, pricing, the API or your account.', 6);
-
+  'Hi! I am the Seekora demo assistant. Ask about the knowledge base, accounts, or demo plans.', 6);
 -- ---------------------------- marketing ------------------------------
 INSERT INTO features (icon, title, description, sort_order) VALUES
- ('*', 'All-in-One Platform', 'One platform for all information needs - no more jumping between dozens of scattered websites.', 1),
- ('*', 'AI-Generated Summaries', 'Complex content simplified into simple words, so anyone can understand any topic instantly.', 2),
- ('*', 'Reliable Source Links', 'Every answer comes with transparent source links so you can verify and trust the information.', 3),
- ('*', 'Related Images', 'Visual learning made easy with related images for better understanding of every topic.', 4),
- ('*', 'Save Time & Effort', 'Stop wasting hours searching. Get accurate answers in seconds, not scattered across tabs.', 5),
- ('*', 'Accurate & Easy to Use', 'Fast, accurate results wrapped in an intuitive, user-friendly interface for everyone.', 6);
+ ('*', 'Knowledge Base Search', 'Search the locally maintained Seekora topic collection from one simple interface.', 1),
+ ('*', 'Stored Topic Summaries', 'Read concise summaries saved with supported knowledge base topics.', 2),
+ ('*', 'Topic Source Links', 'Open the source links stored with a matching topic to continue your research.', 3),
+ ('*', 'Search History', 'Signed-in users can revisit and manage their previous searches.', 4),
+ ('*', 'Voice Input', 'Use browser speech recognition to enter a search question where supported.', 5),
+ ('*', 'Account Profiles', 'Create an account to keep search history and manage your profile.', 6);
 
 INSERT INTO faqs (question, answer, sort_order) VALUES
- ('Is the platform really free to use?', 'Yes! Our Freemium plan gives you AI-powered search, summaries and source links at no cost. Upgrade to Premium for unlimited searches, PDF analysis and API access.', 1),
- ('How accurate are the AI summaries?', 'Every summary is generated by leading AI models and paired with transparent, verified source links so you can always double-check the information yourself.', 2),
- ('Can developers integrate it into their own apps?', 'Absolutely. Premium users get API access with REST endpoints, making it easy to embed AI search and summarization into any product.', 3),
- ('Do you partner with educational institutions?', 'Yes - we offer institutional and educational partnerships with custom plans for schools, colleges and universities.', 4);
-
-INSERT INTO testimonials (author_name, author_title, initials, rating, content) VALUES
- ('Ananya R.', 'College Student',      'AR', 5, 'I finished my research paper in half the time. The source links make citations effortless!'),
- ('David K.',  'Educator',             'DK', 5, 'The simplified summaries help me explain tough topics to my class. A must-have for teachers.'),
- ('Sara M.',   'Software Professional','SM', 5, 'Fast, accurate, and the API access lets our team integrate it into our own tools. Brilliant.');
+ ('What does Seekora search?', 'The current demo searches its local knowledge base, which contains a small collection of seeded topics and source links. It does not search the live web.', 1),
+ ('Are summaries generated by an AI provider?', 'No external AI provider is configured. Seekora displays summaries stored with matching knowledge base topics.', 2),
+ ('Can I save my searches?', 'Signed-in users can view and manage their search history. Guest searches are associated with the current browser session.', 3),
+ ('Does Premium process a payment?', 'No. Plan selection is available to demonstrate the subscription flow; no payment gateway is connected.', 4);
 
 INSERT INTO platform_stats (label, value, suffix, sort_order) VALUES
- ('Faster Research', 10, 'x',  1),
- ('Verified Sources', 100, '%', 2),
- ('Active Learners', 50, 'K+', 3),
- ('User Segments', 6, '+', 4);
+ ('Seeded Topics', 5, '', 1),
+ ('Guest Search Limit', 10, '/day', 2),
+ ('Seeded Source Links', 9, '', 3),
+ ('Chat Reply Intents', 6, '', 4);

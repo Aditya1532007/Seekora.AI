@@ -16,6 +16,7 @@ import java.time.format.DateTimeFormatter;
 public final class JsonUtil {
 
     private static final Gson GSON = new GsonBuilder()
+            .serializeNulls()
             .registerTypeAdapter(LocalDateTime.class,
                     (com.google.gson.JsonSerializer<LocalDateTime>) (src, type, ctx) ->
                             src == null ? null : new com.google.gson.JsonPrimitive(

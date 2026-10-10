@@ -7,6 +7,7 @@ import com.seekora.model.Plan;
 import com.seekora.model.Subscription;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 
 public class SubscriptionService {
@@ -16,7 +17,18 @@ public class SubscriptionService {
     private final ActivityLogDao activityLogDao = new ActivityLogDao();
 
     public List<Plan> plans() {
-        return planDao.findAllWithFeatures();
+        List<Plan> plans = planDao.findAllWithFeatures();
+        for (Plan plan : plans) {
+            if ("FREEMIUM".equals(plan.getCode())) {
+                plan.setFeatures(Arrays.asList("Knowledge base search", "10 searches per day",
+                        "Source links included", "Web application access"));
+            } else if ("PREMIUM".equals(plan.getCode())) {
+                plan.setFeatures(Arrays.asList("Unlimited knowledge base searches", "Stored topic summaries",
+                        "Saved search history", "Profile management", "Browser voice input",
+                        "JSON API endpoints"));
+            }
+        }
+        return plans;
     }
 
     public Subscription subscribe(long userId, String planCode, String billingCycle, String ip) {

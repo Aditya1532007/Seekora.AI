@@ -42,7 +42,8 @@ public class SearchServlet extends BaseServlet {
 
         Map<String, Object> payload = new LinkedHashMap<>();
         payload.put("search", result);
-        payload.put("searchesRemainingToday", searchService.remainingToday(userId));
+        payload.put("searchesRemainingToday", searchService.remainingToday(userId,
+                ServletUtils.sessionKey(request)));
         ServletUtils.ok(response, payload);
     }
 }

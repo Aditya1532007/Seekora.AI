@@ -3,33 +3,34 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Information Platform — Search Smarter, Learn Faster</title>
+<title>Seekora AI — Search Smarter, Learn Faster</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
 <style>
 /* ============ THEMES ============ */
 :root{
-  --bg:#04050d; 
-  --bg2:#0a0d1f; 
+  --bg:#04050d;
+  --bg2:#0a0d1f;
   --card:rgba(255,255,255,.04);
-  --border:rgba(255,255,255,.09); 
-  --text:#eef1fb; 
+  --border:rgba(255,255,255,.09);
+  --text:#eef1fb;
   --muted:#98a1bf;
-  --cyan:#00e5ff; 
-  --violet:#7c3aed; 
-  --pink:#ff2ea6; 
+  --cyan:#00e5ff;
+  --violet:#7c3aed;
+  --pink:#ff2ea6;
   --green:#00ffa3;
   --grad:linear-gradient(120deg,#00e5ff,#7c3aed 55%,#ff2ea6);
-  --nav:rgba(4,5,13,.8); 
+  --nav:rgba(4,5,13,.8);
   --shadow:rgba(0,0,0,.5);
 }
+body.fine input,body.fine textarea,body.fine [contenteditable="true"]{cursor:text}
 [data-theme="light"]{
-  --bg:#f4f6fd; 
-  --bg2:#ffffff; 
+  --bg:#f4f6fd;
+  --bg2:#ffffff;
   --card:rgba(10,15,40,.04);
-  --border:rgba(10,15,40,.12); 
-  --text:#0d1226; 
+  --border:rgba(10,15,40,.12);
+  --text:#0d1226;
   --muted:#5a6480;
-  --nav:rgba(255,255,255,.8); 
+  --nav:rgba(255,255,255,.8);
   --shadow:rgba(20,30,80,.15);
 }
 *{margin:0;padding:0;box-sizing:border-box}
@@ -41,6 +42,10 @@ body{
   overflow-x:hidden;
   line-height:1.6;
   transition:background .5s,color .5s;
+}
+::-moz-selection{
+    background:var(--violet);
+    color:#fff;
 }
 ::selection{
     background:var(--violet);
@@ -224,7 +229,7 @@ body.hovering #cursorRing{
     pointer-events:none;
   background-image:linear-gradient(rgba(128,140,180,.06) 1px,transparent 1px),
                    linear-gradient(90deg,rgba(128,140,180,.06) 1px,transparent 1px);
-  background-size:60px 60px;mask-image:radial-gradient(ellipse at 50% 0%,#000 30%,transparent 75%);
+  background-size:60px 60px;-webkit-mask-image:radial-gradient(ellipse at 50% 0%,#000 30%,transparent 75%);mask-image:radial-gradient(ellipse at 50% 0%,#000 30%,transparent 75%);
 }
 
 /* ============ NAVBAR ============ */
@@ -907,6 +912,20 @@ footer a:hover{color:var(--cyan);transform:translateX(5px)}
 .reveal{opacity:0;transform:translateY(44px);transition:.9s cubic-bezier(.2,.7,.3,1)}
 .reveal.visible{opacity:1;transform:none}
 .reveal.d1{transition-delay:.1s}.reveal.d2{transition-delay:.2s}.reveal.d3{transition-delay:.3s}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;
+    scroll-behavior:auto!important;transition-duration:.01ms!important}
+  #particles{opacity:.08}
+}
+@media (min-width:921px) and (max-width:1250px){
+  nav,nav.scrolled{padding-left:4%;padding-right:4%}
+  .nav-links{gap:14px}
+  .nav-links a{font-size:.85rem;white-space:nowrap}
+  .nav-cta{gap:8px!important}
+  .nav-cta .kbd-hint{display:none}
+  .nav-cta .btn{padding:11px 18px;font-size:.84rem;white-space:nowrap}
+}
 @media(max-width:920px){
   #hero{grid-template-columns:1fr;padding-top:130px;text-align:center}
   #hero .lead{margin-left:auto;margin-right:auto}
@@ -931,7 +950,8 @@ footer a:hover{color:var(--cyan);transform:translateX(5px)}
 .logo-img{
     width: 42px;
     height: 42px;
-    object-fit: contain;
+    -o-object-fit: contain;
+       object-fit: contain;
 }
 </style>
 </head>
@@ -939,7 +959,7 @@ footer a:hover{color:var(--cyan);transform:translateX(5px)}
 
 <div id="preloader">
   <div class="loader-logo">
-     <img src="WhatsApp Image 2026-09-07 at 10.35.19 PM.jpeg" alt="Seekora logo" class="logo-img"> 
+     🤖
   </div>
   <div class="loader-bar"><div id="loaderFill"></div></div>
   <div class="loader-text">Initializing AI Engine…</div>
@@ -955,8 +975,8 @@ footer a:hover{color:var(--cyan);transform:translateX(5px)}
 <!-- NAVBAR -->
 <nav id="navbar">
   <div class="logo"><div class="logo-icon">
-  <img src="WhatsApp Image 2026-09-07 at 10.35.19 PM.jpeg" alt="Seekora logo" class="logo-img"> 
-  </div>Seekora<span class="grad-text">Platform</span></div>
+  🤖
+  </div>Seekora<span class="grad-text">AI</span></div>
   <ul class="nav-links" id="navLinks">
     <li><a href="#features" class="spy">Features</a></li>
     <li><a href="#how" class="spy">How It Works</a></li>
@@ -983,17 +1003,17 @@ footer a:hover{color:var(--cyan);transform:translateX(5px)}
     <p class="lead reveal d2">A smart, reliable, all-in-one platform that empowers students, researchers, and professionals to find, learn, and grow — instantly.</p>
     <div class="hero-btns reveal d3">
       <button class="btn magnetic" onclick="location.href='#demo'">Try Live Demo ⚡</button>
-      <button class="btn btn-ghost magnetic" onclick="toast('🎬 Demo video coming soon!')">Watch Demo ▶</button>
+      <button class="btn btn-ghost magnetic" onclick="location.href=appUrl()">Open the AI app ↗</button>
     </div>
   </div>
   <div class="hero-visual reveal d2">
-    <div class="float-badge fb1">⚡ 10x Faster Research</div>
+    <div class="float-badge fb1">⚡ Ask in plain language</div>
     <div class="terminal" id="terminal">
       <div class="term-head"><div class="dot"></div><div class="dot"></div><div class="dot"></div>
-        <span class="term-title">ai-platform — engine v3.0</span></div>
+        <span class="term-title">seekora — example workflow</span></div>
       <div class="term-body" id="termBody"></div>
     </div>
-    <div class="float-badge fb2">✅ 100% Verified Sources</div>
+    <div class="float-badge fb2">✅ Answers with source links</div>
   </div>
 </section>
 
@@ -1004,7 +1024,7 @@ footer a:hover{color:var(--cyan);transform:translateX(5px)}
 <section id="demo">
   <span class="tag reveal">Live Demo</span>
   <h2 class="section-title reveal">Ask <span class="grad-text">Anything</span></h2>
-  <p class="section-sub reveal">Try our smart demo — or click the mic 🎙️ and speak your question!</p>
+  <p class="section-sub reveal">Seekora searches multiple relevant websites, compares what it finds, and summarizes the answer with source links.</p>
   <div class="search-box reveal">
     <input type="text" id="searchInput" placeholder="Ask anything… try 'quantum computing' or 'photosynthesis'" onkeydown="if(event.key==='Enter')demoSearch()">
     <button class="btn btn-ghost mic-btn" id="micBtn" onclick="voiceSearch()" title="Voice search">🎙️</button>
@@ -1019,28 +1039,28 @@ footer a:hover{color:var(--cyan);transform:translateX(5px)}
   <div class="search-result" id="searchResult">
     <h3 style="font-size:1rem">💡 AI Summary</h3>
     <p id="resultText" style="color:var(--muted);font-size:.93rem;margin-top:10px"></p>
-    <div class="src">🔗 en.wikipedia.org &nbsp; 🔗 scholar.google.com &nbsp; 🖼️ 4 related images &nbsp; ⭐ Accuracy: 98%</div>
+    <div class="src" id="sourceLinks"></div>
   </div>
   <div class="stats">
-    <div class="stat reveal"><b class="counter" data-target="10">0</b><b>x</b><span>Faster Research</span></div>
-    <div class="stat reveal d1"><b class="counter" data-target="100">0</b><b>%</b><span>Verified Sources</span></div>
-    <div class="stat reveal d2"><b class="counter" data-target="50">0</b><b>K+</b><span>Active Learners</span></div>
-    <div class="stat reveal d3"><b class="counter" data-target="6">0</b><b>+</b><span>User Segments</span></div>
+    <div class="stat reveal"><b class="counter" data-target="0" data-stat="totalUsers">0</b><span>Accounts</span></div>
+    <div class="stat reveal d1"><b class="counter" data-target="0" data-stat="totalSearches">0</b><span>Questions searched</span></div>
+    <div class="stat reveal d2"><b class="counter" data-target="0" data-stat="newsletterSubscribers">0</b><span>Newsletter subscribers</span></div>
+    <div class="stat reveal d3"><b class="counter" data-target="5">0</b><span>AI modes</span></div>
   </div>
 </section>
 
 <!-- FEATURES -->
 <section id="features">
   <span class="tag reveal">Value Propositions</span>
-  <h2 class="section-title reveal">Why Choose <span class="grad-text">AI Info Platform?</span></h2>
+  <h2 class="section-title reveal">Why Choose <span class="grad-text">Seekora AI?</span></h2>
   <p class="section-sub reveal">Everything you need to find accurate information — summarized, simplified, and source-linked.</p>
   <div class="grid grid-3">
     <div class="card reveal"><div class="shine"></div><div class="icon">🌐</div><h3>All-in-One Platform</h3><p>One platform for all information needs — no more jumping between dozens of scattered websites.</p></div>
-    <div class="card reveal d1"><div class="shine"></div><div class="icon">📝</div><h3>AI-Generated Summaries</h3><p>Complex content simplified into simple words, so anyone can understand any topic instantly.</p></div>
-    <div class="card reveal d2"><div class="shine"></div><div class="icon">🔗</div><h3>Reliable Source Links</h3><p>Every answer comes with transparent source links so you can verify and trust the information.</p></div>
-    <div class="card reveal"><div class="shine"></div><div class="icon">🖼️</div><h3>Related Images</h3><p>Visual learning made easy with related images for better understanding of every topic.</p></div>
+    <div class="card reveal d1"><div class="shine"></div><div class="icon">📝</div><h3>Multi-Source Summaries</h3><p>Seekora compares information from relevant websites and turns it into a clear, concise answer.</p></div>
+    <div class="card reveal d2"><div class="shine"></div><div class="icon">🔗</div><h3>Source Links</h3><p>Open the cited websites to review the information behind your answer.</p></div>
+    <div class="card reveal"><div class="shine"></div><div class="icon">🖼️</div><h3>Image & Page Analysis</h3><p>Ask questions about an image or request a summary of a public webpage.</p></div>
     <div class="card reveal d1"><div class="shine"></div><div class="icon">⚡</div><h3>Save Time & Effort</h3><p>Stop wasting hours searching. Get accurate answers in seconds, not scattered across tabs.</p></div>
-    <div class="card reveal d2"><div class="shine"></div><div class="icon">🎯</div><h3>Accurate & Easy to Use</h3><p>Fast, accurate results wrapped in an intuitive, user-friendly interface for everyone.</p></div>
+    <div class="card reveal d2"><div class="shine"></div><div class="icon">🎯</div><h3>Simple to Use</h3><p>Ask a question in everyday language, then follow up in the same conversation.</p></div>
   </div>
 </section>
 
@@ -1048,12 +1068,12 @@ footer a:hover{color:var(--cyan);transform:translateX(5px)}
 <section id="how">
   <span class="tag reveal">The Process</span>
   <h2 class="section-title reveal">How It <span class="grad-text">Works</span></h2>
-  <p class="section-sub reveal">Powered by OpenAI / Gemini APIs with smart data processing and source verification.</p>
+  <p class="section-sub reveal">Seekora searches multiple relevant websites, compares the information it finds, then writes a sourced summary.</p>
   <div class="steps">
     <div class="step reveal"><h3>Ask Your Question</h3><p>Type or speak any query — from homework to deep research.</p></div>
-    <div class="step reveal d1"><h3>AI Searches & Verifies</h3><p>Our AI searches multiple sources, filters data, and verifies credibility in real time.</p></div>
-    <div class="step reveal d2"><h3>Get a Simple Summary</h3><p>Receive a clear, simplified summary with transparent source links and related images.</p></div>
-    <div class="step reveal d3"><h3>Learn & Grow</h3><p>Save searches to history, get personalized recommendations, and keep learning.</p></div>
+    <div class="step reveal d1"><h3>Search Multiple Websites</h3><p>The AI checks several relevant web sources and compares the information they provide.</p></div>
+    <div class="step reveal d2"><h3>Get a Sourced Summary</h3><p>Read a concise answer, then open its source links to check the original information.</p></div>
+    <div class="step reveal d3"><h3>Keep Your History</h3><p>Sign in to save searches and manage your conversation history.</p></div>
   </div>
 </section>
 
@@ -1073,14 +1093,14 @@ footer a:hover{color:var(--cyan);transform:translateX(5px)}
 <section id="stack">
   <span class="tag reveal">Under the Hood</span>
   <h2 class="section-title reveal">Our <span class="grad-text">Technology Stack</span></h2>
-  <p class="section-sub reveal">Built with modern, proven technologies for speed and reliability.</p>
+  <p class="section-sub reveal">Built with React, Java servlets, Tomcat, and MySQL.</p>
   <div class="stack-grid">
-    <div class="stack-item reveal"><div class="si">🎨</div><b>HTML · CSS · JS</b><small>Frontend</small></div>
-    <div class="stack-item reveal d1"><div class="si">🐍</div><b>Python · Flask</b><small>Backend</small></div>
-    <div class="stack-item reveal d2"><div class="si">🗄️</div><b>MySQL · SQLite</b><small>Database</small></div>
-    <div class="stack-item reveal d3"><div class="si">🧠</div><b>OpenAI · Gemini</b><small>AI / NLP</small></div>
+    <div class="stack-item reveal"><div class="si">⚛️</div><b>React · Vite</b><small>Frontend</small></div>
+    <div class="stack-item reveal d1"><div class="si">☕</div><b>Java · Tomcat</b><small>Backend</small></div>
+    <div class="stack-item reveal d2"><div class="si">🗄️</div><b>MySQL</b><small>Database</small></div>
+    <div class="stack-item reveal d3"><div class="si">🧠</div><b>Google Gemini</b><small>AI answers</small></div>
     <div class="stack-item reveal"><div class="si">🔌</div><b>REST API · JSON</b><small>Integration</small></div>
-    <div class="stack-item reveal d1"><div class="si">☁️</div><b>Git · Cloud</b><small>DevOps</small></div>
+    <div class="stack-item reveal d1"><div class="si">🌐</div><b>Web Search</b><small>Current sources</small></div>
   </div>
 </section>
 
@@ -1088,7 +1108,7 @@ footer a:hover{color:var(--cyan);transform:translateX(5px)}
 <section id="pricing">
   <span class="tag reveal">Revenue Model</span>
   <h2 class="section-title reveal">Simple, <span class="grad-text">Flexible Pricing</span></h2>
-  <p class="section-sub reveal">Start free forever. Upgrade when you need more power.</p>
+  <p class="section-sub reveal">Start free. Plan selection is a demonstration only; no payment is processed.</p>
   <div class="billing-toggle reveal">
     <button class="on" id="mBtn" onclick="setBilling('m')">Monthly</button>
     <button id="yBtn" onclick="setBilling('y')">Yearly <span class="save-tag">−20%</span></button>
@@ -1106,25 +1126,25 @@ footer a:hover{color:var(--cyan);transform:translateX(5px)}
       <h3>Premium</h3>
       <div class="price" id="premiumPrice">$9<small>/month</small></div>
       <ul><li>Unlimited AI searches</li><li>Advanced summaries & analysis</li>
-        <li>PDF upload & analysis</li><li>Search history & personalization</li>
-        <li>Priority customer support</li><li>API access for developers</li></ul>
-      <button class="btn magnetic" style="width:100%" onclick="choosePlan('PREMIUM')">Go Premium</button>
+        <li>Image and webpage analysis</li><li>Search history & profile management</li>
+        <li>Browser voice input</li><li>JSON API endpoints</li></ul>
+      <button class="btn magnetic" style="width:100%" onclick="choosePlan()">Go Premium</button>
     </div>
   </div>
 </section>
 
 <!-- TESTIMONIALS -->
 <section id="testimonials">
-  <span class="tag reveal">Loved by Learners</span>
-  <h2 class="section-title reveal">What People <span class="grad-text">Say</span></h2>
-  <p class="section-sub reveal">Trusted by students, educators, and professionals worldwide.</p>
+  <span class="tag reveal">Made for learning</span>
+  <h2 class="section-title reveal">One place to <span class="grad-text">explore ideas</span></h2>
+  <p class="section-sub reveal">Use Seekora to ask questions, follow sources, and keep track of your conversations.</p>
   <div class="testi-grid">
-    <div class="testi reveal"><div class="stars">★★★★★</div><p>"I finished my research paper in half the time. The source links make citations effortless!"</p>
-      <div class="testi-user"><div class="avatar">AR</div><div><b>Ananya R.</b><small>College Student</small></div></div></div>
-    <div class="testi reveal d1"><div class="stars">★★★★★</div><p>"The simplified summaries help me explain tough topics to my class. A must-have for teachers."</p>
-      <div class="testi-user"><div class="avatar">DK</div><div><b>David K.</b><small>Educator</small></div></div></div>
-    <div class="testi reveal d2"><div class="stars">★★★★★</div><p>"Fast, accurate, and the API access lets our team integrate it into our own tools. Brilliant."</p>
-      <div class="testi-user"><div class="avatar">SM</div><div><b>Sara M.</b><small>Software Professional</small></div></div></div>
+    <div class="testi reveal"><div class="stars">01</div><p>Ask a general question and get a direct answer from the AI service.</p>
+      <div class="testi-user"><div class="avatar">✨</div><div><b>Ask</b><small>Explore a topic</small></div></div></div>
+    <div class="testi reveal d1"><div class="stars">02</div><p>Use web research or analyze a webpage or image when you need more context.</p>
+      <div class="testi-user"><div class="avatar">🔎</div><div><b>Research</b><small>Go deeper</small></div></div></div>
+    <div class="testi reveal d2"><div class="stars">03</div><p>Sign in to save your conversations and continue them later.</p>
+      <div class="testi-user"><div class="avatar">💬</div><div><b>Continue</b><small>Keep your history</small></div></div></div>
   </div>
 </section>
 
@@ -1135,7 +1155,7 @@ footer a:hover{color:var(--cyan);transform:translateX(5px)}
   <p class="section-sub reveal">Our vision for the future of intelligent learning.</p>
   <div class="timeline">
     <div class="tl-item reveal"><h3>🎙️ Voice Search & AI Chat Assistant</h3><p>Talk to the platform naturally — try the mic and chat widget on this page right now!</p></div>
-    <div class="tl-item reveal"><h3>📄 PDF Upload & Analysis</h3><p>Upload documents and get instant AI-powered summaries and insights.</p></div>
+    <div class="tl-item reveal"><h3>📄 More Document Formats</h3><p>Additional document analysis formats may be added in a future release.</p></div>
     <div class="tl-item reveal"><h3>📱 Mobile Application</h3><p>Native iOS and Android apps for learning on the go.</p></div>
     <div class="tl-item reveal"><h3>🌐 Multi-language Support</h3><p>Breaking language barriers to make knowledge truly universal.</p></div>
     <div class="tl-item reveal"><h3>🎯 Personalized Recommendations</h3><p>Smarter suggestions tailored to your learning journey and interests.</p></div>
@@ -1149,9 +1169,9 @@ footer a:hover{color:var(--cyan);transform:translateX(5px)}
   <p class="section-sub reveal">Everything you need to know about the platform.</p>
   <div class="faq">
     <div class="faq-item reveal"><button class="faq-q" onclick="toggleFaq(this)">Is the platform really free to use?<span>+</span></button>
-      <div class="faq-a"><p>Yes! Our Freemium plan gives you AI-powered search, summaries, and source links at no cost. Upgrade to Premium for unlimited searches, PDF analysis, and API access.</p></div></div>
+      <div class="faq-a"><p>Yes. The Freemium plan includes AI search and summaries with daily limits. Plan selection is a demonstration flow and does not process payments.</p></div></div>
     <div class="faq-item reveal"><button class="faq-q" onclick="toggleFaq(this)">How accurate are the AI summaries?<span>+</span></button>
-      <div class="faq-a"><p>Every summary is generated by leading AI models (OpenAI / Gemini) and paired with transparent, verified source links so you can always double-check the information yourself.</p></div></div>
+      <div class="faq-a"><p>Answers are generated by the configured AI service. Source links are included when available; review them to verify important information.</p></div></div>
     <div class="faq-item reveal"><button class="faq-q" onclick="toggleFaq(this)">Can developers integrate it into their own apps?<span>+</span></button>
       <div class="faq-a"><p>Absolutely. Premium users get API access with REST endpoints, making it easy to embed AI search and summarization into any product.</p></div></div>
     <div class="faq-item reveal"><button class="faq-q" onclick="toggleFaq(this)">Do you partner with educational institutions?<span>+</span></button>
@@ -1162,7 +1182,7 @@ footer a:hover{color:var(--cyan);transform:translateX(5px)}
 <!-- CTA -->
 <section id="cta">
   <h2 class="section-title reveal">Ready to <span class="grad-text">Search Smarter?</span></h2>
-  <p class="section-sub reveal">Join thousands of learners already finding, learning, and growing with AI Info Platform.</p>
+  <p class="section-sub reveal">Create an account to save conversations and continue exploring your questions.</p>
   <button class="btn magnetic reveal" style="font-size:1.02rem;padding:17px 46px" onclick="openAuth('signup')">Create Free Account 🚀</button>
 </section>
 
@@ -1170,8 +1190,8 @@ footer a:hover{color:var(--cyan);transform:translateX(5px)}
 <footer>
   <div class="footer-grid">
     <div style="max-width:300px">
-      <div class="logo" style="margin-bottom:16px"><div class="logo-icon">🤖</div>AI&nbsp;Info<span class="grad-text">Platform</span></div>
-      <p style="color:var(--muted);font-size:.88rem">A smart, reliable and all-in-one platform that empowers everyone to find, learn and grow.</p>
+      <div class="logo" style="margin-bottom:16px"><div class="logo-icon">🤖</div>Seekora<span class="grad-text"> AI</span></div>
+      <p style="color:var(--muted);font-size:.88rem">Ask questions, explore topics, and keep useful conversations together.</p>
       <div class="newsletter">
         <input type="email" id="nlEmail" placeholder="Your email for updates">
         <button class="btn" style="padding:12px 18px" onclick="subscribe()">→</button>
@@ -1181,7 +1201,7 @@ footer a:hover{color:var(--cyan);transform:translateX(5px)}
     <div><h4>Company</h4><a href="#">About Us</a><a href="#">Educational Partners</a><a href="#">Careers</a><a href="#">Contact</a></div>
     <div><h4>Community</h4><a href="#">GitHub</a><a href="#">Developer Community</a><a href="#">Social Media</a><a href="#">Blog</a></div>
   </div>
-  <div class="copyright">© 2025 AI Information Platform · Search Smarter, Learn Faster · Psst… type <b style="color:var(--cyan)">matrix</b> anywhere for a surprise 🕶️</div>
+  <div class="copyright">© 2026 Seekora AI · Search Smarter, Learn Faster</div>
 </footer>
 
 <!-- AUTH MODAL -->
@@ -1196,11 +1216,8 @@ footer a:hover{color:var(--cyan);transform:translateX(5px)}
     <input type="text" id="authName" placeholder="Full name">
     <input type="email" id="authEmail" placeholder="Email address">
     <input type="password" id="authPass" placeholder="Password">
-    <button class="btn" style="width:100%" onclick="doAuth()">Create Account 🚀</button>
-    <div class="social-row">
-      <button onclick="toast('🔵 Google sign-in coming soon!')">G Google</button>
-      <button onclick="toast('🐙 GitHub sign-in coming soon!')">⌥ GitHub</button>
-    </div>
+    <button class="btn" id="authSubmit" style="width:100%" onclick="doAuth()">Create Account 🚀</button>
+    <p class="social-row">Your account is secured by Seekora's Tomcat session.</p>
   </div>
 </div>
 
@@ -1230,70 +1247,9 @@ footer a:hover{color:var(--cyan);transform:translateX(5px)}
 
 <script>
 /* ============ SETUP ============ */
-if(matchMedia('(pointer:fine)').matches)document.body.classList.add('fine');
-
-/* ============ BACKEND API CLIENT ============ */
-/* Every call goes to the Java servlet backend of this same web app. */
-const API=(location.pathname.split('/').slice(0,2).join('/')||'')+'/api';
-let currentUser=null;
-
-async function api(path,{method='GET',body=null}={}){
-  const res=await fetch(API+path,{
-    method,
-    headers:{'Content-Type':'application/json'},
-    credentials:'same-origin',
-    body:body?JSON.stringify(body):null
-  });
-  let json={};
-  try{json=await res.json()}catch(e){json={success:false,message:'Server did not return JSON'}}
-  if(!res.ok||json.success===false)throw new Error(json.message||('Request failed ('+res.status+')'));
-  return json;
-}
-
-function renderAuthState(user){
-  currentUser=user;
-  const btn=document.querySelector('.nav-cta .btn');
-  if(!btn)return;
-  if(user){
-    btn.textContent='Hi, '+user.fullName.split(' ')[0]+' · Log out';
-    btn.onclick=logout;
-  }else{
-    btn.textContent='Get Started';
-    btn.onclick=()=>openAuth('signup');
-  }
-}
-
-async function logout(){
-  try{await api('/auth/logout',{method:'POST'});renderAuthState(null);toast('Logged out')}
-  catch(e){toast(e.message)}
-}
-
-async function loadHistory(){
-  if(!currentUser)return;
-  try{
-    const res=await api('/history?limit=5');
-    if(res.data.length)toast('Recent searches: '+res.data.map(h=>h.queryText).join(' · '));
-  }catch(e){/* history is optional */}
-}
-
-/* Bootstrap: session, live content and trending topics from MySQL. */
-window.addEventListener('DOMContentLoaded',async()=>{
-  try{const me=await api('/auth/me');renderAuthState(me.data)}catch(e){}
-  try{
-    const stats=await api('/content/stats');
-    const counters=document.querySelectorAll('.counter');
-    (stats.data.headlineStats||[]).forEach((s,i)=>{if(counters[i])counters[i].dataset.target=s.value});
-  }catch(e){}
-  try{
-    const faqs=await api('/content/faqs');
-    const wrap=document.querySelector('.faq');
-    if(wrap&&faqs.data.length){
-      wrap.innerHTML=faqs.data.map(f=>
-        '<div class="faq-item reveal visible"><button class="faq-q" onclick="toggleFaq(this)">'+
-        f.question+'<span>+</span></button><div class="faq-a"><p>'+f.answer+'</p></div></div>').join('');
-    }
-  }catch(e){}
-});
+const finePointer=matchMedia('(pointer:fine) and (min-width:768px)');
+const reducedMotion=matchMedia('(prefers-reduced-motion:reduce)');
+if(finePointer.matches)document.body.classList.add('fine');
 
 /* ============ PRELOADER ============ */
 let lp=0;const fill=document.getElementById('loaderFill');
@@ -1317,12 +1273,24 @@ function toggleTheme(){
 /* ============ CURSOR ============ */
 const cur=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
 let mx=innerWidth/2,my=innerHeight/2,rx=mx,ry=my;
-addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
-(function ringLoop(){rx+=(mx-rx)*.14;ry+=(my-ry)*.14;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(ringLoop)})();
-document.querySelectorAll('a,button,.card,.chip,.faq-q,input,.testi,.sug,.stack-item').forEach(el=>{
-  el.addEventListener('mouseenter',()=>document.body.classList.add('hovering'));
-  el.addEventListener('mouseleave',()=>document.body.classList.remove('hovering'));
-});
+let cursorFrame=0;
+function animateCursorRing(){
+  if(reducedMotion.matches||!finePointer.matches)return;
+  rx+=(mx-rx)*.14;ry+=(my-ry)*.14;
+  ring.style.left=rx+'px';ring.style.top=ry+'px';
+  cursorFrame=requestAnimationFrame(animateCursorRing);
+}
+if(finePointer.matches){
+  addEventListener('mousemove',e=>{
+    mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';
+    if(reducedMotion.matches){rx=mx;ry=my;ring.style.left=rx+'px';ring.style.top=ry+'px'}
+  });
+  if(!reducedMotion.matches)animateCursorRing();
+  document.querySelectorAll('a,button,.card,.chip,.faq-q,input,textarea,.testi,.sug,.stack-item').forEach(el=>{
+    el.addEventListener('mouseenter',()=>document.body.classList.add('hovering'));
+    el.addEventListener('mouseleave',()=>document.body.classList.remove('hovering'));
+  });
+}
 
 /* ============ SCROLL / SPY ============ */
 addEventListener('scroll',()=>{
@@ -1339,8 +1307,12 @@ addEventListener('scroll',()=>{
 /* ============ PARTICLES ============ */
 const canvas=document.getElementById('particles'),ctx=canvas.getContext('2d');
 let particles=[];
-function resize(){canvas.width=innerWidth;canvas.height=innerHeight}
-resize();addEventListener('resize',resize);
+let particleFrame=0,lastParticleFrame=0;
+function resize(){
+  canvas.width=innerWidth;canvas.height=innerHeight;
+  if(reducedMotion.matches&&particles.length)drawParticles(0);
+}
+resize();
 class P{
   constructor(){this.reset()}
   reset(){this.x=Math.random()*canvas.width;this.y=Math.random()*canvas.height;
@@ -1353,8 +1325,15 @@ class P{
     if(this.x<0||this.x>canvas.width||this.y<0||this.y>canvas.height)this.reset()}
   draw(){ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,7);ctx.fillStyle=`rgba(${this.c},.7)`;ctx.fill()}
 }
-for(let i=0;i<Math.min(85,innerWidth/14);i++)particles.push(new P());
-(function loop(){
+const coarsePointer=matchMedia('(pointer:coarse)').matches;
+const particleCount=coarsePointer?Math.min(32,Math.max(14,Math.floor(innerWidth/24))):Math.min(85,Math.max(30,Math.floor(innerWidth/14)));
+for(let i=0;i<particleCount;i++)particles.push(new P());
+function drawParticles(timestamp){
+  if(document.hidden)return;
+  if(!reducedMotion.matches&&timestamp-lastParticleFrame<1000/30){
+    particleFrame=requestAnimationFrame(drawParticles);return;
+  }
+  lastParticleFrame=timestamp;
   ctx.clearRect(0,0,canvas.width,canvas.height);
   for(let i=0;i<particles.length;i++){
     for(let j=i+1;j<particles.length;j++){
@@ -1362,10 +1341,31 @@ for(let i=0;i<Math.min(85,innerWidth/14);i++)particles.push(new P());
       if(d<130){ctx.strokeStyle=`rgba(124,58,237,${.13*(1-d/130)})`;
         ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);ctx.stroke()}
     }
-    particles[i].update();particles[i].draw();
+    if(!reducedMotion.matches)particles[i].update();
+    particles[i].draw();
   }
-  requestAnimationFrame(loop);
-})();
+  if(!reducedMotion.matches)particleFrame=requestAnimationFrame(drawParticles);
+}
+function onParticleVisibilityChange(){
+  if(document.hidden)cancelAnimationFrame(particleFrame);
+  else if(!reducedMotion.matches){lastParticleFrame=0;particleFrame=requestAnimationFrame(drawParticles)}
+  else drawParticles(0);
+}
+function onReducedMotionChange(){
+  cancelAnimationFrame(cursorFrame);
+  cancelAnimationFrame(particleFrame);
+  if(reducedMotion.matches){
+    rx=mx;ry=my;ring.style.left=rx+'px';ring.style.top=ry+'px';
+    drawParticles(0);
+  }else{
+    if(finePointer.matches)animateCursorRing();
+    if(!document.hidden){lastParticleFrame=0;particleFrame=requestAnimationFrame(drawParticles)}
+  }
+}
+addEventListener('resize',resize);
+document.addEventListener('visibilitychange',onParticleVisibilityChange);
+reducedMotion.addEventListener('change',onReducedMotionChange);
+drawParticles(0);
 
 /* ============ TYPED HEADLINE ============ */
 const phrases=['All Your Information Needs.','Smarter Research.','Faster Learning.','Verified Answers.'];
@@ -1381,9 +1381,9 @@ function startTyped(){(function type(){
 
 /* ============ TERMINAL ============ */
 function startTerminal(){
-  const lines=[['p1','$ ai search "quantum computing"'],['p3','> Connecting to OpenAI / Gemini API…'],
-    ['p2','✓ 12 sources found · 12 verified'],['p3','> Generating simplified summary…'],
-    ['p2','✓ Summary ready in 0.8s'],['p4','→ "Quantum computers use qubits that can be 0 AND 1 at once…"'],['p1','$ _']];
+  const lines=[['p1','$ seekora ask "your question"'],['p3','> Sending request to the configured AI service…'],
+    ['p2','✓ Searching multiple relevant websites'],['p3','> Comparing results and writing a summary…'],
+    ['p2','✓ Answer ready to review'],['p4','→ Ask a follow-up or continue in the AI app'],['p1','$ _']];
   const body=document.getElementById('termBody');let i=0;
   (function next(){if(i<lines.length){const d=document.createElement('div');
     d.className=lines[i][0];d.textContent=lines[i][1];body.appendChild(d);i++;setTimeout(next,650)}})();
@@ -1396,44 +1396,81 @@ addEventListener('mousemove',e=>{
 });
 
 /* ============ MARQUEE ============ */
-const items=['AI-Powered Search','Instant Summaries','Verified Sources','Related Images','Voice Search','PDF Analysis','Multi-language','API Access','Personalized Feed'];
+const items=['AI-Powered Search','Conversational Answers','Source Links','Image Analysis','Webpage Analysis','Voice Input','Saved History','MySQL · Tomcat','React App'];
 const html=items.map(t=>`<span>${t}</span>`).join('');
 document.getElementById('mq1').innerHTML=html;
 document.getElementById('mq2').innerHTML=html;
 
 /* ============ SMART DEMO SEARCH ============ */
-const knowledge=[
-  {keys:['quantum'],ans:'Quantum computing uses "qubits" that can be 0 and 1 at the same time (superposition). This lets quantum computers solve certain problems — like drug discovery and cryptography — millions of times faster than normal computers. 🔬'},
-  {keys:['photosynthesis'],ans:'Photosynthesis is how plants make food: they capture sunlight with chlorophyll, absorb CO₂ from air and water from roots, and convert them into glucose (energy) + oxygen. Basically, plants turn sunlight into food! 🌱'},
-  {keys:['ai','artificial intelligence','machine learning'],ans:'AI works by training models on huge amounts of data so they learn patterns. When you ask something, the model predicts the most useful answer based on what it learned — like this platform does using OpenAI / Gemini APIs! 🤖'},
-  {keys:['climate'],ans:'Climate change is the long-term warming of Earth caused mainly by greenhouse gases (CO₂, methane) from burning fossil fuels. Effects include rising seas, extreme weather, and ecosystem disruption. Solutions: renewable energy + sustainability. 🌍'},
-  {keys:['blockchain'],ans:'Blockchain is a shared, unchangeable digital ledger. Transactions are grouped into "blocks" and cryptographically linked in a "chain", making data transparent and tamper-proof — the tech behind cryptocurrencies. ⛓️'},
-];
-function getAnswer(q){
-  const l=q.toLowerCase();
-  for(const k of knowledge)if(k.keys.some(key=>l.includes(key)))return k.ans;
-  return `Here's a simplified summary of "${q}": Our AI searched 12 verified sources, filtered the data, and condensed it into easy words. In production, this answer is generated live by the OpenAI / Gemini API with transparent source links and related images. ⚡`;
+function apiBase(){
+  const segments=location.pathname.split('/').filter(Boolean);
+  return `/${segments[0]||''}/api`.replace(/^\/\/api$/,'/api');
+}
+async function requestApi(path,body){
+  let response;
+  try{
+    response=await fetch(`${apiBase()}${path}`,{
+      method:body===undefined?'GET':'POST',
+      headers:{Accept:'application/json',...(body===undefined?{}:{'Content-Type':'application/json'})},
+      credentials:'same-origin',
+      body:body===undefined?undefined:JSON.stringify(body)
+    });
+  }catch{
+    throw new Error('Could not connect to Seekora. Check that the server is running.');
+  }
+  let envelope;
+  try{envelope=await response.json()}catch{
+    throw new Error(`Seekora returned an invalid response (${response.status}).`);
+  }
+  if(!envelope||typeof envelope!=='object'||typeof envelope.success!=='boolean'){
+    throw new Error(`Seekora returned an invalid response (${response.status}).`);
+  }
+  if(!response.ok||!envelope.success){
+    throw new Error(envelope.message||`Request failed (${response.status}).`);
+  }
+  if(!Object.prototype.hasOwnProperty.call(envelope,'data')){
+    throw new Error(`Seekora returned an incomplete response (${response.status}).`);
+  }
+  return envelope.data;
+}
+function renderSources(sources){
+  const container=document.getElementById('sourceLinks');
+  container.replaceChildren();
+  if(!Array.isArray(sources)||sources.length===0){
+    container.textContent='No source links were returned for this answer.';
+    return;
+  }
+  for(const source of sources){
+    try{
+      const url=new URL(source.url);
+      if(!['http:','https:'].includes(url.protocol))continue;
+      const link=document.createElement('a');
+      link.href=url.href;
+      link.target='_blank';
+      link.rel='noopener noreferrer';
+      link.textContent=source.title||url.hostname;
+      container.append(link,document.createTextNode(' · '));
+    }catch{/* Ignore malformed links from external source metadata. */}
+  }
 }
 async function demoSearch(){
-  const q=document.getElementById('searchInput').value.trim()||'your topic';
+  const q=document.getElementById('searchInput').value.trim();
+  if(!q)return toast('Please enter a question first.');
   const box=document.getElementById('searchResult'),txt=document.getElementById('resultText');
-  box.style.display='block';txt.textContent='Searching…';
-  let answer,srcHtml='';
+  box.style.display='block';
+  txt.textContent='Searching and preparing an answer…';
+  document.getElementById('sourceLinks').replaceChildren();
   try{
-    const res=await api('/search',{method:'POST',body:{query:q}});
-    const s=res.data.search;
-    answer=s.answerText;
-    srcHtml=(s.sources||[]).map(x=>'<a href="'+x.url+'" target="_blank" rel="noopener">🔗 '+x.title+'</a>').join(' &nbsp; ')+
-            ' &nbsp; ⭐ Accuracy: '+s.accuracy+'% &nbsp; ⏱ '+s.responseTimeMs+' ms';
-    const left=res.data.searchesRemainingToday;
-    if(left>=0&&left<=3)toast('You have '+left+' free searches left today.');
-  }catch(e){
-    answer=e.message;
+    const data=await requestApi('/search',{query:q});
+    const result=data&&data.search;
+    if(!result||typeof result.answerText!=='string'||!result.answerText.trim()){
+      throw new Error('Seekora did not return an answer. Please try again.');
+    }
+    txt.textContent=result.answerText;
+    renderSources(result.sources);
+  }catch(error){
+    txt.textContent=error instanceof Error?error.message:'Search failed. Please try again.';
   }
-  const srcBox=box.querySelector('.src');
-  if(srcBox&&srcHtml)srcBox.innerHTML=srcHtml;
-  txt.textContent='';
-  let i=0;(function type(){if(i<answer.length){txt.textContent+=answer[i++];setTimeout(type,13)}})();
 }
 function askSug(q){document.getElementById('searchInput').value=q;demoSearch();
   document.getElementById('searchResult').scrollIntoView({behavior:'smooth',block:'center'})}
@@ -1461,7 +1498,18 @@ const cObs=new IntersectionObserver(es=>es.forEach(e=>{
   (function tick(){n+=Math.max(1,target/60);if(n>=target)n=target;
     e.target.textContent=Math.floor(n);if(n<target)requestAnimationFrame(tick)})();
 }),{threshold:.5});
-document.querySelectorAll('.counter').forEach(c=>cObs.observe(c));
+document.querySelectorAll('.counter:not([data-stat])').forEach(c=>cObs.observe(c));
+requestApi('/content/stats').then(stats=>{
+  document.querySelectorAll('.counter[data-stat]').forEach(counter=>{
+    const value=Number(stats[counter.dataset.stat]);
+    if(!Number.isFinite(value)||value<0)throw new Error('The live platform statistics were invalid.');
+    counter.dataset.target=String(value);
+    cObs.observe(counter);
+  });
+}).catch(error=>{
+  console.error('Could not load live platform statistics:',error);
+  document.querySelectorAll('.counter[data-stat]').forEach(counter=>{counter.textContent='—'});
+});
 
 /* ============ CARD FX / MAGNETIC ============ */
 document.querySelectorAll('.card').forEach(card=>{
@@ -1498,18 +1546,35 @@ function toast(msg){
   const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
   clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),3200);
 }
-async function subscribe(){
+function subscribe(){
   const e=document.getElementById('nlEmail').value.trim();
   if(!e||!e.includes('@'))return toast('📧 Please enter a valid email!');
-  try{
-    const res=await api('/newsletter',{method:'POST',body:{email:e}});
+  requestApi('/newsletter',{email:e}).then(()=>{
     document.getElementById('nlEmail').value='';
-    toast('🎉 '+res.message);
-  }catch(err){toast('⚠️ '+err.message)}
+    toast('🎉 Subscribed! Welcome to the newsletter.');
+  }).catch(error=>toast(error.message));
 }
 
 /* ============ AUTH MODAL ============ */
 let authMode='signup';
+let currentUser=null;
+let pendingPremium=false;
+let billingCycle='MONTHLY';
+function appUrl(){
+  const segments=location.pathname.split('/').filter(Boolean);
+  const context=segments.length&&segments[0].includes('.')?'':segments[0];
+  return `/${context}/app/`.replace(/^\/\//,'/');
+}
+function updateAccountButton(){
+  const button=document.querySelector('#navbar .nav-cta > .btn');
+  if(!button)return;
+  button.textContent=currentUser?'Open app':'Get Started';
+  button.onclick=()=>currentUser?location.assign(appUrl()):openAuth('signup');
+}
+requestApi('/auth/me').then(user=>{
+  currentUser=user;
+  updateAccountButton();
+}).catch(error=>console.error('Could not restore the current account session:',error));
 function openAuth(mode){
   document.getElementById('authModal').classList.add('open');authTab(mode||'signup');
 }
@@ -1519,69 +1584,86 @@ function authTab(mode){
   document.getElementById('tabLogin').classList.toggle('on',mode==='login');
   document.getElementById('tabSignup').classList.toggle('on',mode==='signup');
   document.getElementById('authName').style.display=mode==='signup'?'block':'none';
+  document.getElementById('authSubmit').textContent=mode==='signup'?'Create Account 🚀':'Log In';
 }
 async function doAuth(){
+  const name=document.getElementById('authName').value.trim();
   const email=document.getElementById('authEmail').value.trim();
   const pass=document.getElementById('authPass').value;
   if(!email.includes('@'))return toast('📧 Enter a valid email address!');
   if(pass.length<6)return toast('🔒 Password must be at least 6 characters!');
-  const name=document.getElementById('authName').value.trim()||email.split('@')[0];
+  if(authMode==='signup'&&!name)return toast('Please enter your full name.');
+  const button=document.getElementById('authSubmit');
+  button.disabled=true;
   try{
-    const res=authMode==='signup'
-      ? await api('/auth/signup',{method:'POST',body:{fullName:name,email:email,password:pass}})
-      : await api('/auth/login',{method:'POST',body:{email:email,password:pass}});
-    renderAuthState(res.data);
-    document.getElementById('authPass').value='';
+    currentUser=await requestApi(`/auth/${authMode==='signup'?'signup':'login'}`,
+      authMode==='signup'?{fullName:name,email,password:pass}:{email,password:pass});
+    updateAccountButton();
     closeAuth();
-    toast('🎉 '+res.message);
-    loadHistory();
-  }catch(e){toast('⚠️ '+e.message)}
+    if(pendingPremium){
+      pendingPremium=false;
+      await choosePlan();
+      return;
+    }
+    toast(authMode==='signup'?`🎉 Welcome, ${currentUser.fullName}! Account created.`:`👋 Welcome back, ${currentUser.fullName}!`);
+    location.assign(appUrl());
+  }catch(error){
+    toast(error instanceof Error?error.message:'Sign-in failed. Please try again.');
+  }finally{
+    button.disabled=false;
+  }
 }
 
 /* ============ BILLING TOGGLE ============ */
-let billingCycle='MONTHLY';
-async function choosePlan(planCode){
-  if(!currentUser)return openAuth('signup');
-  try{
-    const res=await api('/subscriptions',{method:'POST',body:{planCode:planCode,billingCycle:billingCycle}});
-    toast('✅ '+res.message+' — '+res.data.planCode+' ('+res.data.billingCycle+')');
-    const me=await api('/auth/me');renderAuthState(me.data);
-  }catch(e){toast('⚠️ '+e.message)}
-}
 function setBilling(m){
   billingCycle=m==='y'?'YEARLY':'MONTHLY';
   document.getElementById('mBtn').classList.toggle('on',m==='m');
   document.getElementById('yBtn').classList.toggle('on',m==='y');
-  document.getElementById('premiumPrice').innerHTML=m==='m'?'$9<small>/month</small>':'$7<small>/month</small>';
+  document.getElementById('premiumPrice').innerHTML=m==='m'?'$9<small>/month</small>':'$86.40<small>/year</small>';
   toast(m==='y'?'💸 Yearly billing — you save 20%!':'📅 Monthly billing selected');
+}
+async function choosePlan(){
+  if(!currentUser){
+    pendingPremium=true;
+    return openAuth('signup');
+  }
+  try{
+    await requestApi('/subscriptions',{planCode:'PREMIUM',billingCycle});
+    toast('Premium plan selected. No payment was processed.');
+    location.assign(appUrl());
+  }catch(error){
+    toast(error instanceof Error?error.message:'Could not update the plan.');
+  }
 }
 
 /* ============ AI CHAT WIDGET ============ */
 function toggleChat(){document.getElementById('chatPanel').classList.toggle('open')}
-const botReplies=[
-  {k:['price','cost','premium','free','plan','subscription'],r:'We have a Free plan ($0) and Premium at $9/month (or $7/month billed yearly). Premium unlocks unlimited searches, PDF analysis & API access! 💎'},
-  {k:['feature','what can','do','summar'],r:'I can search the web, generate simple summaries, show verified source links & related images, and save your history. Voice search and chat (that\'s me!) are live right now! ⚡'},
-  {k:['hello','hi','hey'],r:'Hello there! 👋 How can I help you today? Ask about features, pricing, or our roadmap!'},
-  {k:['roadmap','future','coming'],r:'Coming soon: PDF upload & analysis, mobile apps, multi-language support, and personalized recommendations! 🚀'},
-  {k:['api','developer','integrate'],r:'Premium users get REST API access to embed AI search & summarization into their own apps. Check the Pricing section! 🔌'},
-  {k:['who','student','teacher','researcher'],r:'We serve school & college students, teachers, researchers, professionals, and everyday internet users. Everyone is welcome! 🌍'},
-  {k:['thank'],r:'You\'re most welcome! 😊 Anything else I can help with?'},
-];
+function addChatMessage(text,kind){
+  const message=document.createElement('div');
+  message.className=`msg ${kind}`;
+  message.textContent=text;
+  const body=document.getElementById('chatBody');
+  body.appendChild(message);
+  body.scrollTop=body.scrollHeight;
+}
 async function sendChat(){
   const inp=document.getElementById('chatInput'),q=inp.value.trim();
   if(!q)return;inp.value='';
   const body=document.getElementById('chatBody');
-  body.insertAdjacentHTML('beforeend',`<div class="msg user">${q.replace(/</g,'&lt;')}</div>`);
+  addChatMessage(q,'user');
   const t=document.createElement('div');t.className='msg bot typing';t.innerHTML='<i></i><i></i><i></i>';
   body.appendChild(t);body.scrollTop=body.scrollHeight;
-  let reply;
   try{
-    const res=await api('/chat',{method:'POST',body:{message:q}});
-    reply=res.data.message;
-  }catch(e){reply='⚠️ '+e.message}
-  t.remove();
-  body.insertAdjacentHTML('beforeend',`<div class="msg bot">${reply}</div>`);
-  body.scrollTop=body.scrollHeight;
+    const reply=await requestApi('/chat',{message:q});
+    t.remove();
+    if(!reply||typeof reply.message!=='string'||!reply.message.trim()){
+      throw new Error('Seekora did not return a chat reply.');
+    }
+    addChatMessage(reply.message,'bot');
+  }catch(error){
+    t.remove();
+    addChatMessage(error instanceof Error?error.message:'Chat request failed. Please try again.','bot');
+  }
 }
 
 /* ============ COMMAND PALETTE ============ */
